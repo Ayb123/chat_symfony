@@ -1,0 +1,484 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Profil de  {{ app.user.username }}{% endblock %}
+
+{% block body %}
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'poppins', sans-serif;
+    box-sizing: border-box;
+}
+body{
+    background: #222;
+}
+nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #222;
+    padding: 5px 5%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.logo{
+    width: 51px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-right: 85px;
+    margin-left: -36px;
+}
+.nav-left, .nav-right{
+    display: flex;
+    align-items: center;
+}
+.nav-left ul li{
+    list-style: none;
+    display: inline-block;
+}
+.nav-left ul li img{
+    width: 28px;
+    margin: 0 15px;
+}
+.nav-user-icon{
+    margin-left: 30px;
+}
+.nav-user-icon img{
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.search-box{
+    background: #efefef;
+    width: 350px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+}
+.search-box img{
+    width: 18px;
+}
+.search-box input{
+    width: 100%;
+    background: transparent;
+    padding: 10px;
+    outline:none;
+    border: 0;
+}
+.online{
+    position: relative;
+}
+.online::after{
+    content: '';
+    width: 7px;
+    height: 7px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background: #41db51;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.container{
+    display: flex;
+    padding: 13px 5%;
+	color:#fff;
+}
+.left-sidebar{
+    flex-basis: 10%;
+    position: relative;
+    left: -200px;
+	top: 30px;
+}
+.right-sidebar{
+    flex-basis: 100%;
+    position: sticky;
+    top: 70px;
+    align-self: flex-start;
+    background: #222;
+    padding: 10px;
+    border-radius: 4px;
+    color: #dee2e6;
+}
+.main-content{
+    flex-basis: 47%;
+}
+.imp-links a, .shortcut-links a{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    color: #dee2e6;
+    width: fit-content;
+}
+.imp-links a img{
+    width: 25px;
+    margin-right: 15px;
+}
+.imp-links a:last-child{
+    color: #1876f2;
+}
+.imp-links{
+    border-bottom: 1px solid #ccc;
+}
+.shortcut-links a img{
+    width: 40px;
+    border-radius: 4px;
+    margin-right: 15px;
+}
+.shortcut-links p{
+    margin: 25px 0;
+    color: #dee2e6;
+    font-weight: 500;
+}
+.sidebar-title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+.right-sidebar h4{
+    font-weight: 600;
+    font-size: 16px;
+}
+.sidebar-title a{
+    text-decoration: none;
+    color: #1876f2;
+    font-size: 12px;
+}
+.event{
+    display: flex;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+.left-event{
+    border-radius: 10px;
+    height: 65px;
+    width: 65px;
+    margin-right: 15px;
+    padding-top: 10px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.event p{
+    font-size: 12px;
+}
+.event a{
+    font-size: 12px;
+    text-decoration: none;
+    color: #1876f2;
+}
+.left-event span{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #1876f2;
+    color: #fff;
+    font-size: 10px;
+    padding: 4px 0;
+}
+
+.online-list{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.online-list .online img{
+    width: 40px;
+    border-radius: 50%;
+}
+.online-list .online{
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+.online-list .online::after{
+    top: unset;
+    bottom: 5px;
+}
+.write-post-container{
+    width: 100%;
+    background: #0d6efd;
+    border-radius: 6px;
+    padding: 20px;
+    color: #dee2e6;
+}
+.user-profile{
+    display: flex;
+    align-items: center;
+}
+.user-profile img{
+    width: 45px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.user-profile p{
+    margin-bottom: -5px;
+    font-weight: 500;
+    color: #dee2e6;
+}
+.user-profile small{
+    font-size: 12px;
+    color: #222;
+}
+.post-input-container{
+    padding-left: 55px;
+    padding-top: 20px;
+}
+.post-input-container textarea{
+    width: 100%;
+    border: 0;
+    outline: 0;
+    border-bottom: 1px solid #ccc;
+    background: transparent;
+    resize: none;
+}
+.add-post-links{
+    display: flex;
+    margin-top: 10px;
+}
+.add-post-links a{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: #dee2e6;
+    margin-right: 30px;
+    font-size: 13px;
+}
+.add-post-links a img{
+    width: 20px;
+    margin-right: 10px;
+}
+.post-container{
+    width: 54%;
+    background: #fff;
+    border-radius: 6px;
+    padding: 20px;
+    color: #222;
+    margin: 20px 0;
+    
+}
+.user-profile span{
+    font-size: 13px;
+    color: #222;
+}
+.post-text{
+    color: #222;
+    margin: 15px 0;
+    font-size: 15px;
+}
+.post-text a{
+    color: #fff;
+    text-decoration: none;
+}
+.post-img{
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+.post-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.activity-icons div img{
+    width: 18px;
+    margin-right: 10px;
+}
+.activity-icons div{
+    display: inline-flex;
+    align-items: center;
+    margin-right: 30px;
+}
+.settings-menu{
+    position: absolute;
+    width: 90%;
+    max-width: 350px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    overflow: hidden;
+    top: 108%;
+    right: 5%;
+    max-height: 0;
+    transition: max-height 0.3s;
+}
+.settings-menu-height{
+    max-height: 450px;
+}
+.user-profile a{
+    font-size: 12px;
+    color: #1876f2;
+    text-decoration: none;
+}
+.settings-menu-inner{
+    padding: 20px;
+}
+.settings-menu-inner hr{
+    border: 0;
+    height: 1px;
+    background: #dee2e6;
+    margin: 15px 0;
+}
+.settings-menu-inner {
+    background: #222;  
+}
+.settings-menu-inner div:active {
+    background: #fff;  
+}
+.settings-links{
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+.settings-links .settings-icon{
+    width: 38px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+.settings-links a{
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: #dee2e6;
+}
+</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réseau Social</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href={{ asset("css/styles.css") }} type="text/css"/>
+</head>
+
+	 <nav>
+        <div class="nav-left">
+
+            <a href="{{ path("app_acceuil") }}" ><img src='images/logoprincipal.png' class='logo'></a>
+            <ul>
+                <li><img src="images/notification.png"></li>
+                <li><a href="{{ path("app_message") }}" ><img src='images/inbox.png'></a></li>
+                <li><img src="images/video.png"></li>
+            </ul>
+
+        </div>
+
+        <div class="nav-right">
+
+            <div class="search-box">
+                <img src="images/search.png">
+                <input type="text" placeholder="Rechercher">
+            </div>
+            <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+                <img src="images/profile-pic.png">
+            </div>
+
+        </div>
+            <!---settings-menu-->
+        <div class="settings-menu">
+            <div class="settings-menu-inner">
+                <div class="user-profile">
+                    <img src="images/profile-pic.png">
+                        <div>
+                            <p>{{ app.user.prenom }} {{ app.user.nom }}</p>
+                            <a href="{{ path("app_profil") }}" >Voir profil</a>
+                        </div>
+                </div>
+                <hr>
+                <div class="user-profile">
+                    <img src="images/feedback.png">
+                        <div>
+                            <p>Donnez vos avis</p>
+                            <a href="#">Aidez-nous à nous améliorer</a>
+                        </div>
+                </div>
+                <hr>
+                <div class="settings-links">
+                    <img src="images/setting.png" class="settings-icon">
+                    <a href="#">Paramètres <img src="images/arrow.png" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="images/help.png" class="settings-icon">
+                    <a href="#">Aide & Support <img src="images/arrow.png" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="images/display.png" class="settings-icon">
+                    <a href="#">Affichage & Accessibilité <img src="images/arrow.png" width="10px"></a>
+                </div>
+                <div class="settings-links">
+                    <img src="images/logout.png" class="settings-icon">
+                    <a href="{{ path('app_logout') }}">Déconnexion <img src="images/arrow.png" width="10px"></a>
+                </div>
+            </div>
+        </div>
+
+
+    </nav>
+	 <div class="container">
+            <!---left sidebar-->
+        <div class="left-sidebar">
+
+            <div class="imp-links">
+             
+               <a href="{{ path("app_acceuil") }}"><img src={{ asset("images/home.png")}}>Acceuil</a>
+               <a href="{{ path("app_message") }}"><img src={{ asset("images/e-mail.png")}}>Mes messages</a>
+               <a href="{{ path("app_profil") }}"><img src="images/profil.png">Profil</a> 
+               
+            </div>
+           
+                
+
+        </div>
+        
+	<section class="container-post">
+		<div class="row">
+			<div class="col-12">
+				<h1>Envoyer un message</h1>
+                {{ form(form) }}
+				
+			</div>
+		</div>
+	</section>
+	<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+		<div class="offcanvas-header">
+			<h2 class="offcanvas-title" id="offcanvasExampleLabel">Mes dossiers</h2>
+			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body">
+			<div class="list-group">
+				<a href="{{ path("app_message") }}" class="list-group-item list-group-item-action">Accueil</a>
+			</div>
+			<div class="list-group">
+				<a href="{{ path("app_received") }}" class="list-group-item list-group-item-action active">Boîte de réception</a>
+			</div>
+			<div class="list-group">
+				<a href="{{ path("app_message") }}" class="list-group-item list-group-item-action">Eléments envoyés</a>
+			</div>
+			<div class="list-group">
+                <a href="{{ path("app_profil") }}" class="list-group-item list-group-item-action">Profil</a>
+            </div>
+		</div>
+	</div>
+
+	<script>
+var settingsmenu = document.querySelector(".settings-menu");
+
+function settingsMenuToggle(){
+    settingsmenu.classList.toggle("settings-menu-height");
+}
+</script>
+
+{% endblock %}
